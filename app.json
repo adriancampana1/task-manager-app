@@ -1,39 +1,62 @@
 {
-  "expo": {
-    "name": "task-manager",
-    "slug": "task-manager",
-    "version": "1.0.0",
-    "orientation": "portrait",
-    "icon": "./assets/images/icon.png",
-    "scheme": "myapp",
-    "userInterfaceStyle": "automatic",
-    "splash": {
-      "image": "./assets/images/splash.png",
-      "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
-    },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
-    "ios": {
-      "supportsTablet": true
-    },
-    "android": {
-      "adaptiveIcon": {
-        "foregroundImage": "./assets/images/adaptive-icon.png",
-        "backgroundColor": "#ffffff"
-      }
-    },
-    "web": {
-      "bundler": "metro",
-      "output": "static",
-      "favicon": "./assets/images/favicon.png"
-    },
-    "plugins": [
-      "expo-router"
-    ],
-    "experiments": {
-      "typedRoutes": true
+    "expo": {
+        "name": "Task Manager",
+        "slug": "task-manager",
+        "version": "1.0.1",
+        "orientation": "portrait",
+        "icon": "./assets/task-manager-icon.png",
+        "scheme": "myapp",
+        "userInterfaceStyle": "automatic",
+        "splash": {
+            "image": "./assets/images/loadingAnimation.webm",
+            "resizeMode": "contain",
+            "backgroundColor": "#ffffff"
+        },
+        "assetBundlePatterns": ["**/*"],
+        "ios": {
+            "supportsTablet": true,
+            "infoPlist": {
+                "NSCalendarsUsageDescription": "O aplicativo pode acessar a sua agenda?",
+                "NSRemindersUsageDescription": "Permitir $(PRODUCT_NAME) acessar seus lembretes",
+                "NSCalendarsFullAccessUsageDescription": "O aplicativo pode acessar a sua agenda?",
+                "NSRemindersFullAccessUsageDescription": "Permitir $(PRODUCT_NAME) acessar seus lembretes"
+            }
+        },
+        "android": {
+            "adaptiveIcon": {
+                "foregroundImage": "./assets/task-manager-splash.png",
+                "backgroundColor": "#ffffff"
+            },
+            "permissions": [
+                "android.permission.READ_CALENDAR",
+                "android.permission.WRITE_CALENDAR"
+            ],
+            "package": "com.adriancampana.taskmanager"
+        },
+        "web": {
+            "bundler": "metro",
+            "output": "static",
+            "favicon": "./assets/task-manager-splash.png"
+        },
+        "plugins": [
+            ["expo-router"],
+            [
+                "expo-calendar",
+                {
+                    "calendarPermission": "O app precisa acessar sua agenda."
+                }
+            ]
+        ],
+        "experiments": {
+            "typedRoutes": true
+        },
+        "extra": {
+            "router": {
+                "origin": false
+            },
+            "eas": {
+                "projectId": "5d49db8a-f3f2-4876-acee-3d7042dd129a"
+            }
+        }
     }
-  }
 }

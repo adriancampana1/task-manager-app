@@ -1,59 +1,88 @@
-import React from 'react';
-import FontAwesome from '@expo/vector-icons/FontAwesome';
-import { Link, Tabs } from 'expo-router';
-import { Pressable } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import Feather from '@expo/vector-icons/Feather';
+import { Tabs } from 'expo-router';
+import { TaskProvider } from '../tasksContext';
 
-import Colors from '@/constants/Colors';
-import { useColorScheme } from '@/components/useColorScheme';
-import { useClientOnlyValue } from '@/components/useClientOnlyValue';
+import { COLORS } from '../../styles/theme';
+import { Keyboard } from 'react-native';
 
-// You can explore the built-in icon families and icons on the web at https://icons.expo.fyi/
 function TabBarIcon(props: {
-  name: React.ComponentProps<typeof FontAwesome>['name'];
-  color: string;
+    name: React.ComponentProps<typeof Feather>['name'];
+    color: string;
 }) {
-  return <FontAwesome size={28} style={{ marginBottom: -3 }} {...props} />;
+    return <Feather size={28} style={{ marginBottom: -3 }} {...props} />;
 }
 
 export default function TabLayout() {
-  const colorScheme = useColorScheme();
+    const [isKeyboardActive, setKeyboardActive] = useState(false);
 
-  return (
-    <Tabs
-      screenOptions={{
-        tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
-        // Disable the static render of the header on web
-        // to prevent a hydration error in React Navigation v6.
-        headerShown: useClientOnlyValue(false, true),
-      }}>
-      <Tabs.Screen
-        name="index"
-        options={{
-          title: 'Tab One',
-          tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
-          headerRight: () => (
-            <Link href="/modal" asChild>
-              <Pressable>
-                {({ pressed }) => (
-                  <FontAwesome
-                    name="info-circle"
-                    size={25}
-                    color={Colors[colorScheme ?? 'light'].text}
-                    style={{ marginRight: 15, opacity: pressed ? 0.5 : 1 }}
-                  />
-                )}
-              </Pressable>
-            </Link>
-          ),
-        }}
-      />
-      <Tabs.Screen
-        name="two"
-        options={{
-          title: 'Tab Two',
-          tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
-        }}
-      />
-    </Tabs>
-  );
+    useEffect(() => {
+        const keyboardDidShowListener = Keyboard.addListener(
+            'keyboardDidShow',
+            () => {
+                setKeyboardActive(true);
+            }
+        );
+
+        const keyboardDidHideListener = Keyboard.addListener(
+            'keyboardDidHide',
+            () => {
+                setKeyboardActive(false);
+            }
+        );
+
+        return () => {
+            keyboardDidShowListener.remove();
+            keyboardDidHideListener.remove();
+        };
+    }, []);
+
+    return (
+        <TaskProvider>
+            <Tabs
+                screenOptions={{
+                    tabBarActiveTintColor: COLORS.ORANGE_200,
+                    headerShown: false,
+                    tabBarStyle: [
+                        {
+                            height: 80,
+                            backgroundColor: '#f9f9f9',
+                        },
+                        {
+                            display: isKeyboardActive ? 'none' : 'flex',
+                        },
+                    ],
+                }}
+            >
+                <Tabs.Screen
+                    name="home"
+                    options={{
+                        title: 'Início',
+                        tabBarIcon: ({ color }) => (
+                            <TabBarIcon name="home" color={color} />
+                        ),
+                        tabBarIconStyle: { marginTop: 15 },
+                        tabBarLabelStyle: {
+                            fontSize: 12,
+                            marginBottom: 15,
+                        },
+                    }}
+                />
+                <Tabs.Screen
+                    name="add"
+                    options={{
+                        title: 'Adicionar',
+                        tabBarIcon: ({ color }) => (
+                            <TabBarIcon name="plus" color={color} />
+                        ),
+                        tabBarIconStyle: { marginTop: 15 },
+                        tabBarLabelStyle: {
+                            fontSize: 12,
+                            marginBottom: 15,
+                        },
+                    }}
+                />
+            </Tabs>
+        </TaskProvider>
+    );
 }

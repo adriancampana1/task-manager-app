@@ -1,13 +1,10 @@
 import { Stack } from 'expo-router';
+
 import * as SplashScreen from 'expo-splash-screen';
 import { useEffect } from 'react';
 import LoadFonts from '@/assets/fonts/fonts';
 
 export { ErrorBoundary } from 'expo-router';
-
-export const unstable_settings = {
-    initialRouteName: 'index',
-};
 
 SplashScreen.preventAutoHideAsync();
 
@@ -32,11 +29,5 @@ export default function RootLayout() {
 }
 
 function RootLayoutNav() {
-    return (
-        <Stack>
-            <Stack.Screen name="index" options={{ headerShown: false }} />
-            <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-            <Stack.Screen name="(screens)" options={{ headerShown: false }} />
-        </Stack>
-    );
+    return <Stack screenOptions={{ headerShown: false }}></Stack>;
 }
