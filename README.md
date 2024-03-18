@@ -4,7 +4,7 @@
 
 ## Visão Geral
 
-Este aplicativo é uma ferramenta poderosa projetada para ajudar os usuários a organizar suas tarefas diárias de forma eficiente e intuitiva. O Task Manager pode ser utilizado totalmente offline e em qualquer lugar, pois as tarefas são todas salvas localmente no dispositivo.
+Este aplicativo é uma ferramenta poderosa projetada para ajudar os usuários a organizar suas tarefas diárias de forma eficiente e intuitiva. O Task Manager pode ser utilizado totalmente offline e em qualquer lugar, pois as tarefas são todas salvas localmente no dispositivo e em sua agenda local.
 
 ## Instalação e Configuração
 
@@ -55,7 +55,7 @@ A navegação na aplicação é feita utilizando `useRouter` do Expo para a nave
 
 ## Persistência de Dados
 
-Este aplicativo utiliza o `AsyncStorage` para armazenar dados localmente, permitindo assim o uso do aplicativo offline.
+Este aplicativo utiliza o `AsyncStorage` para armazenar dados localmente, permitindo assim o uso do aplicativo offline. Além disso, as tarefas criadas são salvas na agenda local do dispositivo utilizando a biblioteca Expo Calendar.
 
 ## Tecnologias Principais
 
@@ -63,7 +63,8 @@ Este aplicativo utiliza o `AsyncStorage` para armazenar dados localmente, permit
 - **Expo**: Ferramenta para facilitar o desenvolvimento e a implantação de aplicativos React Native.
 - **TypeScript**: Superset de JavaScript que adiciona tipagem estática ao código.
 - **AsyncStorage**: Módulo React Native para armazenamento local de dados.
+- **Expo Calendar**: Biblioteca Expo para manipulação da agenda local.
 - **Jest**: Framework de teste para JavaScript.
-- **React Navigation**: Biblioteca de roteamento e navegação para aplicativos React Native.
+- **Expo Router**: Biblioteca de roteamento e navegação para aplicativos Expo.
 
 ---
