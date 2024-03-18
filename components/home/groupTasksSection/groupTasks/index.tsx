@@ -43,7 +43,6 @@ interface Task {
 const GroupTasks = () => {
     const [categoryData, setCategoryData] = useState<GroupItem[]>([]);
     const [taskData, setTaskData] = useState<Task[]>([]);
-    const [quantityOfTasks, setQuantityOfTasks] = useState(0);
     const { addTask } = useTaskContext();
 
     const router = useRouter();

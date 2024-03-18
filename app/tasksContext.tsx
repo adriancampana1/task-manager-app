@@ -1,13 +1,8 @@
 import React, { createContext, useContext, useState, ReactNode } from 'react';
 
-interface TaskContextType {
-    tasks: Task[];
-    addTask: (newTask: Task) => void;
-}
-
 interface ToDo {
     task: string;
-    status: string;
+    status: boolean;
     id: string;
 }
 
@@ -20,6 +15,12 @@ interface Task {
     toDo: ToDo[];
     startDate: string;
     endDate: string;
+    createdAt: Date;
+}
+
+interface TaskContextType {
+    tasks: Task[];
+    addTask: (newTask: Task) => void;
 }
 
 const TaskContext = createContext<TaskContextType | undefined>(undefined);

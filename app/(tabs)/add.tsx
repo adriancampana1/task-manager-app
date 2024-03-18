@@ -35,7 +35,7 @@ interface Category {
 
 interface ToDo {
     task: string;
-    status: string;
+    status: boolean;
     id: string;
 }
 
@@ -348,8 +348,8 @@ const AddTask = () => {
 
         const newToDoItem: ToDo = {
             task: toDoItem,
-            status: 'not started',
-            id: Math.floor(Math.random() * 100).toString(),
+            status: false,
+            id: uuidv4(),
         };
 
         setToDoList((prevToDoList) => [...prevToDoList, newToDoItem]);

@@ -21,7 +21,7 @@ const statusBarHeight = StatusBar.currentHeight;
 
 interface ToDo {
     task: string;
-    status: string;
+    status: boolean;
     id: string;
 }
 
@@ -34,6 +34,7 @@ interface Task {
     toDo: ToDo[];
     startDate: string;
     endDate: string;
+    createdAt: Date;
 }
 
 const DetailsPage = () => {
@@ -63,6 +64,42 @@ const DetailsPage = () => {
             year: 'numeric',
         });
         return formattedDate;
+    };
+
+    const handleToDoStatusChange = async (taskId: string, status: boolean) => {
+        const toDoData = taskData?.toDo;
+        const updatedToDo = toDoData?.map((todo) => {
+            if (todo.id === taskId) {
+                return { ...todo, status };
+            }
+            return todo;
+        });
+
+        const updatedTaskData: Task = {
+            id: taskData?.id || '',
+            title: taskData?.title || '',
+            taskGroup: taskData?.taskGroup || '',
+            description: taskData?.description || '',
+            completed: taskData?.completed || false,
+            toDo: updatedToDo || [],
+            startDate: taskData?.startDate || '',
+            endDate: taskData?.endDate || '',
+            createdAt: taskData?.createdAt || new Date(),
+        };
+        setTaskData(updatedTaskData);
+
+        const updatedData = data.map((task) => {
+            if (task.id === taskData?.id) {
+                return updatedTaskData;
+            }
+            return task;
+        });
+        setData(updatedData);
+        try {
+            await AsyncStorage.setItem('tasks', JSON.stringify(updatedData));
+        } catch (err) {
+            console.error('Houve um erro ao atualizar o item da tarefa. ', err);
+        }
     };
 
     const removeTask = async (taskId: string | undefined) => {
@@ -147,7 +184,11 @@ const DetailsPage = () => {
                     <Text style={styles.bodyTitle}>Tarefas</Text>
                     {taskData?.toDo.length ? (
                         taskData?.toDo.map((task) => (
-                            <CheckboxList key={task.id} taskData={task} />
+                            <CheckboxList
+                                key={task.id}
+                                taskData={task}
+                                onStatusChange={handleToDoStatusChange}
+                            />
                         ))
                     ) : (
                         <Text>Nenhuma tarefa adicionada</Text>

@@ -6,16 +6,21 @@ import LoadFonts from '@/assets/fonts/fonts';
 import { SplashScreen } from 'expo-router';
 
 interface ToDo {
+    id: string;
     task: string;
-    status: string;
+    status: boolean;
 }
 
 interface CheckboxListProps {
     taskData?: ToDo;
+    onStatusChange?: (id: string, status: boolean) => void;
 }
 
-const CheckboxList: React.FC<CheckboxListProps> = ({ taskData }) => {
-    const [isChecked, setIsChecked] = useState(false);
+const CheckboxList: React.FC<CheckboxListProps> = ({
+    taskData,
+    onStatusChange,
+}) => {
+    const [isChecked, setIsChecked] = useState(taskData?.status);
 
     const [fontsLoaded, fontError] = LoadFonts();
 
@@ -28,17 +33,25 @@ const CheckboxList: React.FC<CheckboxListProps> = ({ taskData }) => {
     if (!fontsLoaded && !fontError) {
         return null;
     }
+
+    const handleCheckboxChange = () => {
+        const newValue = !isChecked;
+        setIsChecked(newValue);
+        if (taskData) {
+            onStatusChange && onStatusChange(taskData.id, newValue);
+        }
+    };
     return (
-        <View>
+        <View onLayout={onLayoutRootView}>
             {taskData ? (
                 <Pressable
                     style={styles.container}
-                    onPress={() => setIsChecked(!isChecked)}
+                    onPress={() => handleCheckboxChange()}
                 >
                     <Checkbox
                         style={styles.checkbox}
                         value={isChecked}
-                        onValueChange={setIsChecked}
+                        onValueChange={handleCheckboxChange}
                         color={isChecked ? COLORS.ORANGE_200 : undefined}
                     />
                     <Text
