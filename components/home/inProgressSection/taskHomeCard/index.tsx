@@ -21,6 +21,16 @@ const TaskHomeCard: React.FC<TaskHomeCardProps> = ({
     startDate,
     endDate,
 }) => {
+    const formatDate = (date: string) => {
+        const newDate = new Date(date);
+        const formattedDate = newDate.toLocaleDateString('pt-BR', {
+            day: '2-digit',
+            month: '2-digit',
+            year: 'numeric',
+        });
+        return formattedDate;
+    };
+
     const [fontsLoaded, fontError] = LoadFonts();
 
     const onLayoutRootView = useCallback(async () => {
@@ -49,9 +59,9 @@ const TaskHomeCard: React.FC<TaskHomeCardProps> = ({
                             Categoria: {taskGroup}
                         </Text>
                     </View>
-                    <Text style={styles.date}>{`${startDate.split('T')[0]} - ${
-                        endDate.split('T')[0]
-                    }`}</Text>
+                    <Text style={styles.date}>{`${formatDate(
+                        startDate
+                    )} -- ${formatDate(endDate)}`}</Text>
                 </View>
             </View>
         </View>
@@ -81,6 +91,7 @@ const styles = StyleSheet.create({
     date: {
         fontFamily: 'LexendDeca-Light',
         fontSize: 16,
+        opacity: 0.6,
     },
     taskDescription: {
         fontFamily: 'LexendDeca-Light',

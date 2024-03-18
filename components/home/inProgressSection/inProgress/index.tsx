@@ -32,6 +32,7 @@ interface Task {
     toDo: ToDo[];
     startDate: string;
     endDate: string;
+    createdAt: Date;
 }
 
 const InProgress = () => {
@@ -60,7 +61,15 @@ const InProgress = () => {
             try {
                 const tasks = await AsyncStorage.getItem('tasks');
                 if (tasks !== null) {
-                    setData(JSON.parse(tasks));
+                    const parsedTasks = JSON.parse(tasks);
+
+                    // sorting data based on creation date
+                    parsedTasks.sort(
+                        (a: Task, b: Task) =>
+                            new Date(b.createdAt).getTime() -
+                            new Date(a.createdAt).getTime()
+                    );
+                    setData(parsedTasks);
                 }
             } catch (e) {
                 console.error('Não foi possível realizar a busca dos dados');

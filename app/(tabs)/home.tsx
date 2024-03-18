@@ -1,9 +1,7 @@
 import { useCallback, useEffect } from 'react';
 import {
-    Pressable,
     Text,
     View,
-    SafeAreaView,
     StyleSheet,
     StatusBar,
     Platform,

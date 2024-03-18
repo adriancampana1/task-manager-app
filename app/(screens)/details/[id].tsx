@@ -55,6 +55,16 @@ const DetailsPage = () => {
         return null;
     }
 
+    const formatDate = (date: string) => {
+        const newDate = new Date(date);
+        const formattedDate = newDate.toLocaleDateString('pt-BR', {
+            day: '2-digit',
+            month: '2-digit',
+            year: 'numeric',
+        });
+        return formattedDate;
+    };
+
     const removeTask = async (taskId: string | undefined) => {
         try {
             const tasks = await AsyncStorage.getItem('tasks');
@@ -117,22 +127,7 @@ const DetailsPage = () => {
                 </View>
             </View>
             <View style={styles.mainContent}>
-                <Feather
-                    name={
-                        taskData?.taskGroup === 'Trabalho'
-                            ? 'briefcase'
-                            : taskData?.taskGroup === 'Faculdade'
-                            ? 'book-open'
-                            : taskData?.taskGroup === 'Casa'
-                            ? 'home'
-                            : taskData?.taskGroup === 'Saúde'
-                            ? 'heart'
-                            : taskData?.taskGroup === 'Lazer'
-                            ? 'sunrise'
-                            : 'briefcase'
-                    }
-                    size={48}
-                />
+                <Feather name="briefcase" size={48} />
                 <Text style={styles.mainContentTitle}>{taskData?.title}</Text>
                 <Text style={styles.mainContentDescription}>
                     Categoria: {taskData?.taskGroup}
@@ -165,7 +160,7 @@ const DetailsPage = () => {
                     <TextInput
                         placeholder="Selecione uma data"
                         style={[styles.input, { color: '#00131F' }]}
-                        value={taskData?.startDate.split('T')[0]}
+                        value={taskData ? formatDate(taskData?.startDate) : ''}
                         editable={false}
                     />
                 </View>
@@ -176,7 +171,7 @@ const DetailsPage = () => {
                     <TextInput
                         placeholder="Selecione uma data"
                         style={[styles.input, { color: '#00131F' }]}
-                        value={taskData?.endDate.split('T')[0]}
+                        value={taskData ? formatDate(taskData?.endDate) : ''}
                         editable={false}
                     />
                 </View>

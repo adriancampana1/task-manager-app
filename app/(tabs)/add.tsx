@@ -48,6 +48,7 @@ interface Task {
     toDo: ToDo[];
     startDate: string;
     endDate: string;
+    createdAt: Date;
 }
 
 interface Alarm {
@@ -132,7 +133,12 @@ const AddTask = () => {
                 setInitialDate(currentDate);
 
                 toggleInitialDatePicker();
-                setTaskInitialDate(currentDate.toISOString());
+                const formattedDate = currentDate.toLocaleDateString('pt-BR', {
+                    day: '2-digit',
+                    month: '2-digit',
+                    year: 'numeric',
+                });
+                setTaskInitialDate(formattedDate);
             }
         } else {
             toggleInitialDatePicker();
@@ -150,7 +156,12 @@ const AddTask = () => {
                 setEndDate(currentDate);
 
                 toggleEndDatePicker();
-                setTaskEndDate(currentDate.toISOString());
+                const formattedDate = currentDate.toLocaleDateString('pt-BR', {
+                    day: '2-digit',
+                    month: '2-digit',
+                    year: 'numeric',
+                });
+                setTaskEndDate(formattedDate);
             }
         } else {
             toggleEndDatePicker();
@@ -166,12 +177,12 @@ const AddTask = () => {
         if (type === 'set') {
             if (date) {
                 setInitialTime(date);
-                if (Platform.OS === 'android') {
-                    toggleInitialTimePicker();
-                    setTaskInitialTime(
-                        date.toISOString().split('T')[1].slice(0, -5)
-                    );
-                }
+                toggleInitialTimePicker();
+                const formattedTime = date.toLocaleTimeString([], {
+                    hour: '2-digit',
+                    minute: '2-digit',
+                });
+                setTaskInitialTime(formattedTime);
             }
         } else {
             toggleInitialTimePicker();
@@ -187,12 +198,12 @@ const AddTask = () => {
         if (type === 'set') {
             if (date) {
                 setEndTime(date);
-                if (Platform.OS === 'android') {
-                    toggleEndTimePicker();
-                    setTaskEndTime(
-                        date.toISOString().split('T')[1].slice(0, -5)
-                    );
-                }
+                toggleEndTimePicker();
+                const formattedTime = date.toLocaleTimeString([], {
+                    hour: '2-digit',
+                    minute: '2-digit',
+                });
+                setTaskEndTime(formattedTime);
             }
         } else {
             toggleEndTimePicker();
@@ -205,7 +216,7 @@ const AddTask = () => {
             type === 'task' ? createNewTaskItem() : createNewCategoryItem();
 
         if (type === 'task') {
-            if (!taskTitle || !taskGroup || !taskInitialDate) {
+            if (!taskTitle || !taskGroup || !taskInitialDate || !taskEndDate) {
                 showEmptyFieldsAlert();
             } else {
                 setTaskListAndUpdatePage(newItem);
@@ -244,15 +255,16 @@ const AddTask = () => {
             taskGroup: taskGroup,
             id: uuidv4(),
             toDo: toDoList || [],
-            startDate: taskInitialDate,
-            endDate: taskEndDate,
+            startDate: initialDate,
+            endDate: endDate,
+            createdAt: new Date(),
         };
     };
 
     const createNewCategoryItem = () => {
         return {
             title: categoryTitle,
-            id: Math.floor(Math.random() * 1000).toString(),
+            id: uuidv4(),
         };
     };
 
@@ -550,7 +562,7 @@ const AddTask = () => {
                                             styles.input,
                                             { color: '#00131F' },
                                         ]}
-                                        value={taskInitialDate.split('T')[0]}
+                                        value={taskInitialDate}
                                         onChangeText={setTaskInitialDate}
                                         editable={false}
                                     />
@@ -608,7 +620,7 @@ const AddTask = () => {
                                             styles.input,
                                             { color: '#00131F' },
                                         ]}
-                                        value={taskEndDate.split('T')[0]}
+                                        value={taskEndDate}
                                         onChangeText={setTaskEndDate}
                                         editable={false}
                                     />
