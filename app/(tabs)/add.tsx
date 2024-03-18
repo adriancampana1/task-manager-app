@@ -392,11 +392,15 @@ const AddTask = () => {
 
     const getCategoryData = async () => {
         try {
-            const categories = await AsyncStorage.getItem('categories');
-            if (categories !== null) {
-                setInitialCategoryData(JSON.parse(categories));
-                return JSON.parse(categories);
+            let categories = await AsyncStorage.getItem('categories');
+            if (categories === null || categories === '[]') {
+                categories = JSON.stringify([{ title: 'Geral', id: uuidv4() }]);
+                await AsyncStorage.setItem('categories', categories);
             }
+
+            const parsedCategories = JSON.parse(categories);
+            setInitialCategoryData(parsedCategories);
+            return parsedCategories;
         } catch (e) {
             console.error(`Erro ao buscar dados do localstorage: ${e}`);
         }

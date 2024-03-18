@@ -11,7 +11,9 @@ interface TaskHomeCardProps {
     taskGroup: string;
     description: string;
     startDate: string;
+    startTime: string;
     endDate: string;
+    endTime: string;
 }
 
 const TaskHomeCard: React.FC<TaskHomeCardProps> = ({
@@ -19,7 +21,9 @@ const TaskHomeCard: React.FC<TaskHomeCardProps> = ({
     taskGroup,
     description,
     startDate,
+    startTime,
     endDate,
+    endTime,
 }) => {
     const formatDate = (date: string) => {
         const newDate = new Date(date);
@@ -29,6 +33,15 @@ const TaskHomeCard: React.FC<TaskHomeCardProps> = ({
             year: 'numeric',
         });
         return formattedDate;
+    };
+
+    const formatTime = (time: string) => {
+        const newTime = new Date(time);
+        const formattedTime = newTime.toLocaleTimeString([], {
+            hour: '2-digit',
+            minute: '2-digit',
+        });
+        return formattedTime;
     };
 
     const [fontsLoaded, fontError] = LoadFonts();
@@ -59,9 +72,13 @@ const TaskHomeCard: React.FC<TaskHomeCardProps> = ({
                             Categoria: {taskGroup}
                         </Text>
                     </View>
-                    <Text style={styles.date}>{`${formatDate(
+                    <Text style={styles.date}>{`Início: ${formatDate(
                         startDate
-                    )} -- ${formatDate(endDate)}`}</Text>
+                    )} ${startTime ? '| ' + formatTime(startTime) : ''}`}</Text>
+
+                    <Text style={styles.date}>{`Fim: ${formatDate(endDate)} ${
+                        endTime ? '| ' + formatTime(endTime) : ''
+                    }`}</Text>
                 </View>
             </View>
         </View>

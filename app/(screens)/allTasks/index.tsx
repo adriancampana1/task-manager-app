@@ -15,6 +15,7 @@ import LoadFonts from '@/assets/fonts/fonts';
 import { useRouter } from 'expo-router';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import TaskHomeCard from '@/components/home/inProgressSection/taskHomeCard';
+import EmptyCard from '@/components/home/emptyCard';
 
 const statusBarHeight = StatusBar.currentHeight;
 
@@ -81,25 +82,31 @@ const AllTasks = () => {
                 />
             </View>
             <View style={styles.body}>
-                <FlatList
-                    data={data}
-                    keyExtractor={(item) => item.id}
-                    renderItem={({ item }) => (
-                        <Pressable
-                            onPress={() => router.push(`/details/${item.id}`)}
-                        >
-                            <TaskHomeCard
-                                id={item.id}
-                                title={item.title}
-                                taskGroup={item.taskGroup}
-                                description={item.description}
-                                startDate={item.startDate}
-                                endDate={item.endDate}
-                            />
-                        </Pressable>
-                    )}
-                    contentContainerStyle={{ display: 'flex', gap: 12 }}
-                />
+                {data.length ? (
+                    <FlatList
+                        data={data}
+                        keyExtractor={(item) => item.id}
+                        renderItem={({ item }) => (
+                            <Pressable
+                                onPress={() =>
+                                    router.push(`/details/${item.id}`)
+                                }
+                            >
+                                <TaskHomeCard
+                                    id={item.id}
+                                    title={item.title}
+                                    taskGroup={item.taskGroup}
+                                    description={item.description}
+                                    startDate={item.startDate}
+                                    endDate={item.endDate}
+                                />
+                            </Pressable>
+                        )}
+                        contentContainerStyle={{ display: 'flex', gap: 12 }}
+                    />
+                ) : (
+                    <EmptyCard />
+                )}
             </View>
         </ScrollView>
     );

@@ -31,7 +31,9 @@ interface Task {
     completed: boolean;
     toDo: ToDo[];
     startDate: string;
+    startTime: string;
     endDate: string;
+    endTime: string;
     createdAt: Date;
 }
 
@@ -114,7 +116,9 @@ const InProgress = () => {
                                     taskGroup={item.taskGroup}
                                     description={item.description}
                                     startDate={item.startDate}
+                                    startTime={item.startTime}
                                     endDate={item.endDate}
+                                    endTime={item.endTime}
                                 />
                             </Pressable>
                         )}
