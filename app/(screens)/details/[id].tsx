@@ -33,7 +33,9 @@ interface Task {
     completed: boolean;
     toDo: ToDo[];
     startDate: string;
+    startTime: string;
     endDate: string;
+    endTime: string;
     createdAt: Date;
 }
 
@@ -66,6 +68,15 @@ const DetailsPage = () => {
         return formattedDate;
     };
 
+    const formatTime = (time: string) => {
+        const newTime = new Date(time);
+        const formattedTime = newTime.toLocaleTimeString([], {
+            hour: '2-digit',
+            minute: '2-digit',
+        });
+        return formattedTime;
+    };
+
     const handleToDoStatusChange = async (taskId: string, status: boolean) => {
         const toDoData = taskData?.toDo;
         const updatedToDo = toDoData?.map((todo) => {
@@ -83,7 +94,9 @@ const DetailsPage = () => {
             completed: taskData?.completed || false,
             toDo: updatedToDo || [],
             startDate: taskData?.startDate || '',
+            startTime: taskData?.startTime || '',
             endDate: taskData?.endDate || '',
+            endTime: taskData?.endTime || '',
             createdAt: taskData?.createdAt || new Date(),
         };
         setTaskData(updatedTaskData);
@@ -196,23 +209,40 @@ const DetailsPage = () => {
                 </View>
                 <View>
                     <Text style={styles.bodyTitle}>
-                        Data de início da atividade
+                        Data e horário de início
                     </Text>
                     <TextInput
                         placeholder="Selecione uma data"
                         style={[styles.input, { color: '#00131F' }]}
-                        value={taskData ? formatDate(taskData?.startDate) : ''}
+                        value={
+                            taskData
+                                ? `${formatDate(taskData?.startDate)} - ${
+                                      taskData?.startTime
+                                          ? formatTime(taskData?.startTime)
+                                          : 'horário não informado'
+                                  }`
+                                : ''
+                        }
                         editable={false}
                     />
                 </View>
+
                 <View>
                     <Text style={styles.bodyTitle}>
-                        Data de finalização da atividade
+                        Data e horário de finalização
                     </Text>
                     <TextInput
                         placeholder="Selecione uma data"
                         style={[styles.input, { color: '#00131F' }]}
-                        value={taskData ? formatDate(taskData?.endDate) : ''}
+                        value={
+                            taskData
+                                ? `${formatDate(taskData?.endDate)} - ${
+                                      taskData.endTime
+                                          ? formatTime(taskData?.endTime)
+                                          : 'horário não informado'
+                                  }`
+                                : ''
+                        }
                         editable={false}
                     />
                 </View>
@@ -270,7 +300,7 @@ const styles = StyleSheet.create({
         display: 'flex',
         flexDirection: 'column',
         gap: 32,
-        marginBottom: 32,
+        marginBottom: 48,
     },
     bodyTitle: {
         fontFamily: 'LexendDeca-Regular',
